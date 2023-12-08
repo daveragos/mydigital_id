@@ -3,4 +3,5 @@ class PathConst {
   static String qRPath = '/qr';
   static String userPath = ':user';
   static String profilePath = '/profile';
+  static String loginPath = '/login';
 }

@@ -5,10 +5,10 @@ import '../constants/path_const.dart';
 import '../../presentation/pages/login_page.dart';
 
 final router = GoRouter(
-  initialLocation: '/',
+  initialLocation: PathConst.loginPath,
   routes: [
     GoRoute(
-      path: '/',
+      path: PathConst.loginPath,
       name: 'login',
       builder: (context, state) => const LoginScreen(),
     ),

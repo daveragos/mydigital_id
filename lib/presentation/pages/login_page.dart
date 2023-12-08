@@ -1,15 +1,16 @@
 // ignore_for_file: avoid_print
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mydigital_id/app/constants/path_const.dart';
 import 'package:mydigital_id/app/theme/theme.dart';
 import 'package:mydigital_id/app/utils/api_post.dart';
-import 'package:http/http.dart' as http;
 import 'package:mydigital_id/app/utils/extensions.dart';
 import 'package:mydigital_id/data/model/user_model.dart';
 import 'package:mydigital_id/domain/entities/company.dart';
 import 'package:mydigital_id/domain/entities/user.dart';
+import 'package:mydigital_id/presentation/providers/providers.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -169,30 +170,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          try {
-                            final url = 'user-login';
-                            final data = {
-                              'email': emailController.text,
-                              'password': passwordController.text,
-                            };
-                            final response = await APIPost().postRequest(
-                                route: url, data: data, context: context);
-                            if (response.statusCode == 200) {
-                              var responseData = response.data['user'];
-                              //change the user to usermodel then to entity
-                              //todo no working
-                              UserModel userModel =
-                                  await UserModel.fromJson(responseData);
-                              User userEntity = userModel.toEntity();
-                              print(
-                                  'UserModel: ${userModel.address} AAANNNNNDDDDD userr');
-                              print('User: $userEntity AAANNNNNDDDDD ');
-                            } else {
-                              print('status code : ${response.statusCode}');
-                            }
-                          } catch (e) {
-                            print('Error: $e');
-                          }
+                          _login();
                         }
                       },
                       child: const Text('Login'),
@@ -230,5 +208,34 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void _login() async {
+    try {
+      const url = 'user-login';
+      final data = {
+        'email': emailController.text,
+        'password': passwordController.text,
+      };
+      final response =
+          await APIPost().postRequest(route: url, data: data, context: context);
+      if (response.statusCode == 200) {
+        var responseData = response.data['user'];
+        //change the user to usermodel then to entity
+        //todo no working
+        UserModel userModel = UserModel.fromJson(responseData);
+        User userEntity = userModel.toEntity();
+        ref.read(userStateProvider.notifier).state = userEntity;
+        ref.read(companyProvider.notifier).state = listOfCompanies;
+        ref.read(selectedCompanyProvider.notifier).state = 0;
+        context.go(PathConst.digitalIdPath);
+        print('UserModel: ${userModel.address} AAANNNNNDDDDD userr');
+        print('User: $userEntity AAANNNNNDDDDD ');
+      } else {
+        print('status code : ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 }

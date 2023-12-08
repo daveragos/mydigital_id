@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mydigital_id/app/theme/theme.dart';
 import '../../app/constants/path_const.dart';
 import '../../app/utils/extensions.dart';
 import '../providers/providers.dart';
@@ -93,44 +94,55 @@ class _CreditCardScreenState extends ConsumerState<CreditCardScreen> {
 
   Drawer _buildDrawer(ColorScheme color, BuildContext context) {
     return Drawer(
-      child: ListView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: color.primaryContainer,
-            ),
-            child: Column(
-              children: [
-                Text(
-                  'Digital ID',
-                  style: context.textTheme.displayMedium,
+          Column(
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: color.primaryContainer,
                 ),
-                CircleAvatar(
-                  radius: 35,
-                  child: Icon(Icons.qr_code,
-                      size: 50, color: Colors.white.withOpacity(0.8)),
+                child: Column(
+                  children: [
+                    Image.asset('assets/images/Asset1.png'),
+                    CircleAvatar(
+                      radius: 35,
+                      child: Icon(Icons.qr_code,
+                          size: 50, color: Colors.white.withOpacity(0.8)),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.home),
+                title: const Text('Home'),
+                onTap: () {
+                  context.pop();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.person),
+                title: const Text('Profile'),
+                onTap: () {
+                  context.push(PathConst.profilePath);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.settings),
+                title: const Text('Settings'),
+                onTap: () {},
+              ),
+            ],
           ),
           ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text('Home'),
+            iconColor: primaryColor,
+            trailing: const Icon(Icons.logout),
+            title: const Text('Logout'),
             onTap: () {
-              context.pop();
+              // ref.read(userStateNotifierProvider.notifier).state = [];
+              context.go(PathConst.loginPath);
             },
-          ),
-          ListTile(
-            leading: const Icon(Icons.person),
-            title: const Text('Profile'),
-            onTap: () {
-              context.push(PathConst.profilePath);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Settings'),
-            onTap: () {},
           ),
         ],
       ),

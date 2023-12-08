@@ -1,6 +1,7 @@
 import 'package:mydigital_id/domain/entities/company.dart';
 
 class CompanyModel {
+  //todo add expiration date for the id of the user of that company
   String name;
   String email;
   String role;
@@ -8,6 +9,7 @@ class CompanyModel {
   String phoneNumber;
   String qr;
   String logo;
+  //todo String exp;
 
   CompanyModel({
     required this.name,
@@ -17,6 +19,7 @@ class CompanyModel {
     required this.phoneNumber,
     required this.qr,
     required this.logo,
+    //todo required this.exp
   });
 
   factory CompanyModel.fromEntity(Company company) => CompanyModel(
@@ -27,6 +30,7 @@ class CompanyModel {
         phoneNumber: company.phoneNumber,
         qr: company.qr,
         logo: company.logo,
+        //todo exp: company.exp
       );
 
   Company toEntity() {
@@ -38,6 +42,7 @@ class CompanyModel {
       phoneNumber: phoneNumber,
       qr: qr,
       logo: logo,
+      //todo exp:exp
     );
   }
 }

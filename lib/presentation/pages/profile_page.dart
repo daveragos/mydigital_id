@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mydigital_id/app/theme/theme.dart';
 import '../../app/constants/path_const.dart';
 import '../../app/utils/extensions.dart';
 import '../providers/providers.dart';
@@ -85,8 +86,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       leading: const Icon(Icons.business),
                       title: Text(company.name),
                       subtitle: Text(company.role),
+                      // iconColor: primaryColor,
                       trailing: IconButton(
-                        icon: const Icon(Icons.arrow_forward_ios_sharp),
+                        icon: const Icon(
+                          Icons.arrow_forward_ios_sharp,
+                          color: primaryColor,
+                        ),
                         onPressed: () {
                           //setting the index of the touched to selectedCompanyProvider and popping the page
                           final index = companies.indexOf(company);
