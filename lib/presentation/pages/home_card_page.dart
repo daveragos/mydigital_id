@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -114,18 +116,21 @@ class _CreditCardScreenState extends ConsumerState<HomeCardScreen> {
       ref.read(userStateProvider.notifier).state = userEntity;
       final id = userEntity.id;
       final route = 'user/$id/company';
+      //todo! handle when null
       final response = await APIPost()
           .getRequest(route: route, token: token, context: context);
       if (response.statusCode == 200) {
         final List<dynamic> responseData = response.data;
-        try {
-          final companies = responseData
-              .map((e) =>
-                  CompanyModel.fromJson(e as Map<String, dynamic>).toEntity())
-              .toList();
-          ref.read(companyProvider.notifier).state = companies;
-        } catch (e) {
-          print('Error processing data: $e');
+        if (responseData == null || responseData.isEmpty) {
+          //! handle when null
+        } else {
+          try {
+            final companies = responseData
+                .map((e) =>
+                    CompanyModel.fromJson(e as Map<String, dynamic>).toEntity())
+                .toList();
+            ref.read(companyProvider.notifier).state = companies;
+          } catch (e) {}
         }
       }
     }
