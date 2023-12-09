@@ -1,23 +1,35 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mydigital_id/app/constants/shared_const.dart';
 import 'package:mydigital_id/app/theme/theme.dart';
+import 'package:mydigital_id/data/model/user_model.dart';
+import 'package:mydigital_id/domain/entities/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../app/constants/path_const.dart';
 import '../../app/utils/extensions.dart';
 import '../providers/providers.dart';
 import '../widgets/card_widget.dart';
 import '../widgets/qr_widget.dart';
 
-class CreditCardScreen extends ConsumerStatefulWidget {
-  const CreditCardScreen({super.key});
+class HomeCardScreen extends ConsumerStatefulWidget {
+  const HomeCardScreen({super.key});
 
   @override
-  ConsumerState<CreditCardScreen> createState() => _CreditCardScreenState();
+  ConsumerState<HomeCardScreen> createState() => _CreditCardScreenState();
 }
 
-class _CreditCardScreenState extends ConsumerState<CreditCardScreen> {
+class _CreditCardScreenState extends ConsumerState<HomeCardScreen> {
+  @override
+  void initState() {
+    super.initState();
+    getUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     // final user = ref.watch(userStateNotifierProvider);
@@ -139,13 +151,29 @@ class _CreditCardScreenState extends ConsumerState<CreditCardScreen> {
             iconColor: primaryColor,
             trailing: const Icon(Icons.logout),
             title: const Text('Logout'),
-            onTap: () {
-              // ref.read(userStateNotifierProvider.notifier).state = [];
+            onTap: () async {
+              //clear the shared pref
+              SharedPreferences pref = await SharedPreferences.getInstance();
+              await pref.clear();
               context.go(PathConst.loginPath);
             },
           ),
         ],
       ),
     );
+  }
+
+  void getUser() async {
+    //todo no working
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    final token = pref.getString(SharedConst.token);
+    final user = pref.getString(SharedConst.user);
+
+    if (token != null && user != null) {
+      final json = jsonDecode(user);
+      final userModel = UserModel.fromJson(json);
+      final userEntity = userModel.toEntity();
+      ref.read(userStateProvider.notifier).state = userEntity;
+    }
   }
 }

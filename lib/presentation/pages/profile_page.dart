@@ -28,10 +28,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           children: [
             const SizedBox(height: 20),
             CircleAvatar(
-              radius: 70,
-              child: Icon(Icons.person,
-                  size: 50, color: Colors.white.withOpacity(0.8)),
-            ),
+                radius: 60,
+                child: Image.network(
+                  user.profile_pic_url,
+                  fit: BoxFit.fitHeight,
+                )),
             const SizedBox(height: 10),
             Center(
               child: Text(
@@ -55,11 +56,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     title: const Text('Email'),
                     trailing: Text(user.email),
                   ),
+                  const Divider(),
                   ListTile(
                     leading: const Icon(Icons.location_on_outlined),
                     title: const Text('Address'),
                     trailing: Text(user.address),
                   ),
+                  const Divider(),
                   ListTile(
                     leading: const Icon(Icons.phone_iphone_rounded),
                     title: const Text('Phone Number'),
@@ -82,25 +85,30 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     'Companies',
                     style: context.textTheme.displaySmall,
                   ),
-                  ...companies.map((company) => ListTile(
-                      leading: const Icon(Icons.business),
-                      title: Text(company.name),
-                      subtitle: Text(company.role),
-                      // iconColor: primaryColor,
-                      trailing: IconButton(
-                        icon: const Icon(
-                          Icons.arrow_forward_ios_sharp,
-                          color: primaryColor,
-                        ),
-                        onPressed: () {
-                          //setting the index of the touched to selectedCompanyProvider and popping the page
-                          final index = companies.indexOf(company);
-                          ref.read(selectedCompanyProvider.notifier).state =
-                              index;
-                          context.go(PathConst.digitalIdPath);
-                        },
-                      ))),
-                  const Divider(),
+                  ...companies.map((company) => Column(
+                        children: [
+                          ListTile(
+                              leading: const Icon(Icons.business),
+                              title: Text(company.name),
+                              subtitle: Text(company.role),
+                              // iconColor: primaryColor,
+                              trailing: IconButton(
+                                icon: const Icon(
+                                  Icons.arrow_forward_ios_sharp,
+                                  color: primaryColor,
+                                ),
+                                onPressed: () {
+                                  //setting the index of the touched to selectedCompanyProvider and popping the page
+                                  final index = companies.indexOf(company);
+                                  ref
+                                      .read(selectedCompanyProvider.notifier)
+                                      .state = index;
+                                  context.go(PathConst.digitalIdPath);
+                                },
+                              )),
+                          const Divider(),
+                        ],
+                      )),
                 ],
               ),
             ),

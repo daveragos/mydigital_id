@@ -31,7 +31,8 @@ class CardWidget extends ConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Expanded(child: _buildLeftColumn(style)),
+                  Expanded(
+                      child: _buildLeftColumn(style, user.profile_pic_url)),
                   const SizedBox(width: 25),
                   Expanded(
                       flex: 3,
@@ -78,9 +79,14 @@ class CardWidget extends ConsumerWidget {
     );
   }
 
-  Column _buildLeftColumn(TextStyle style) {
-    return const Column(
-      children: [Expanded(child: Placeholder()), SizedBox(height: 20)],
+  Column _buildLeftColumn(TextStyle style, String url) {
+    return Column(
+      children: [
+        Expanded(child: Image.network(url)),
+        const SizedBox(
+          height: 20,
+        ),
+      ],
     );
   }
 

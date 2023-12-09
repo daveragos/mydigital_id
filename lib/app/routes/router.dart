@@ -1,12 +1,18 @@
 import 'package:go_router/go_router.dart';
+import 'package:mydigital_id/app/utils/authcheck.dart';
 import 'package:mydigital_id/presentation/pages/home_card_page.dart';
 import 'package:mydigital_id/presentation/pages/profile_page.dart';
 import '../constants/path_const.dart';
 import '../../presentation/pages/login_page.dart';
 
 final router = GoRouter(
-  initialLocation: PathConst.loginPath,
+  initialLocation: '/',
   routes: [
+    GoRoute(
+      path: '/',
+      name: 'AuthCheck',
+      builder: (context, state) => const AuthCheck(),
+    ),
     GoRoute(
       path: PathConst.loginPath,
       name: 'login',
@@ -15,7 +21,7 @@ final router = GoRouter(
     GoRoute(
       path: PathConst.digitalIdPath,
       name: 'home_card',
-      builder: (context, state) => const CreditCardScreen(),
+      builder: (context, state) => const HomeCardScreen(),
     ),
     GoRoute(
       path: PathConst.profilePath,
