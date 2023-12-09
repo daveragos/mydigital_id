@@ -1,16 +1,14 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mydigital_id/app/constants/shared_const.dart';
-import 'package:mydigital_id/app/theme/theme.dart';
+import 'package:mydigital_id/data/model/company_model.dart';
 import 'package:mydigital_id/data/model/user_model.dart';
-import 'package:mydigital_id/domain/entities/user.dart';
+import 'package:mydigital_id/data/sources/api/api_post.dart';
+import 'package:mydigital_id/domain/entities/company.dart';
+import 'package:mydigital_id/presentation/widgets/drawer_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../app/constants/path_const.dart';
 import '../../app/utils/extensions.dart';
 import '../providers/providers.dart';
 import '../widgets/card_widget.dart';
@@ -42,7 +40,7 @@ class _CreditCardScreenState extends ConsumerState<HomeCardScreen> {
         centerTitle: true,
         title: const Text('Digital Cards'),
       ),
-      drawer: _buildDrawer(color, context),
+      drawer: BuildDrawer(color: color, context: context),
       body: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
@@ -104,76 +102,31 @@ class _CreditCardScreenState extends ConsumerState<HomeCardScreen> {
     );
   }
 
-  Drawer _buildDrawer(ColorScheme color, BuildContext context) {
-    return Drawer(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            children: [
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: color.primaryContainer,
-                ),
-                child: Column(
-                  children: [
-                    Image.asset('assets/images/Asset1.png'),
-                    CircleAvatar(
-                      radius: 35,
-                      child: Icon(Icons.qr_code,
-                          size: 50, color: Colors.white.withOpacity(0.8)),
-                    ),
-                  ],
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.home),
-                title: const Text('Home'),
-                onTap: () {
-                  context.pop();
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.person),
-                title: const Text('Profile'),
-                onTap: () {
-                  context.push(PathConst.profilePath);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.settings),
-                title: const Text('Settings'),
-                onTap: () {},
-              ),
-            ],
-          ),
-          ListTile(
-            iconColor: primaryColor,
-            trailing: const Icon(Icons.logout),
-            title: const Text('Logout'),
-            onTap: () async {
-              //clear the shared pref
-              SharedPreferences pref = await SharedPreferences.getInstance();
-              await pref.clear();
-              context.go(PathConst.loginPath);
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
   void getUser() async {
     //todo no working
     SharedPreferences pref = await SharedPreferences.getInstance();
     final token = pref.getString(SharedConst.token);
     final user = pref.getString(SharedConst.user);
-
     if (token != null && user != null) {
       final json = jsonDecode(user);
       final userModel = UserModel.fromJson(json);
       final userEntity = userModel.toEntity();
       ref.read(userStateProvider.notifier).state = userEntity;
+      final id = userEntity.id;
+      final route = 'user/$id/company';
+      final response = await APIPost()
+          .getRequest(route: route, token: token, context: context);
+      if (response.statusCode == 200) {
+        final List<dynamic> responseData = response.data;
+        try {
+          final companies = responseData
+              .map((e) => CompanyModel.fromJson(e.toString()).toEntity())
+              .toList();
+          ref.read(companyProvider.notifier).state = companies;
+        } catch (e) {
+          print('Error processing data: $e');
+        }
+      }
     }
   }
 }

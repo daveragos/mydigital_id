@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mydigital_id/app/constants/path_const.dart';
 import 'package:mydigital_id/app/constants/shared_const.dart';
 import 'package:mydigital_id/app/theme/theme.dart';
-import 'package:mydigital_id/app/utils/api_post.dart';
+import 'package:mydigital_id/data/sources/api/api_post.dart';
 import 'package:mydigital_id/app/utils/extensions.dart';
 import 'package:mydigital_id/data/model/user_model.dart';
 import 'package:mydigital_id/domain/entities/company.dart';
@@ -27,63 +27,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
-  final List<Company> listOfCompanies = [
-    Company(
-      name: 'google',
-      role: 'ceo',
-      email: 'google@gmail.com',
-      address: 'silicon',
-      phoneNumber: '09****09',
-      qr: '09****09',
-      logo: '09****09',
-    ),
-    Company(
-      name: 'facebook',
-      role: 'marketting',
-      email: 'facebook@gmail.com',
-      address: 'silicon',
-      phoneNumber: '09****09',
-      qr: '09****09',
-      logo: '09****09',
-    ),
-    Company(
-      name: 'amazon',
-      role: 'sales',
-      email: 'amazon@gmail.com',
-      address: 'silicon',
-      phoneNumber: '09****09',
-      qr: '09****09',
-      logo: '09****09',
-    ),
-    Company(
-      name: 'apple',
-      role: 'cto',
-      email: 'apple@gmail.com',
-      address: 'silicon',
-      phoneNumber: '09****09',
-      qr: '09****09',
-      logo: '09****09',
-    ),
-    Company(
-      name: 'microsoft',
-      role: 'freelancer',
-      email: 'microsoft@gmail.com',
-      address: 'silicon',
-      phoneNumber: '09****09',
-      qr: '09****09',
-      logo: '09****09',
-    ),
-    Company(
-      name: 'twitter',
-      role: 'intern',
-      email: 'twitter@gmail.com',
-      address: 'silicon',
-      phoneNumber: '09****09',
-      qr: '09****09',
-      logo: '09****09',
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {

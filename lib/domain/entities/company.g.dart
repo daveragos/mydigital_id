@@ -15,6 +15,7 @@ _$CompanyImpl _$$CompanyImplFromJson(Map<String, dynamic> json) =>
       phoneNumber: json['phoneNumber'] as String,
       qr: json['qr'] as String,
       logo: json['logo'] as String,
+      exp: json['exp'] as String,
     );
 
 Map<String, dynamic> _$$CompanyImplToJson(_$CompanyImpl instance) =>
@@ -26,4 +27,5 @@ Map<String, dynamic> _$$CompanyImplToJson(_$CompanyImpl instance) =>
       'phoneNumber': instance.phoneNumber,
       'qr': instance.qr,
       'logo': instance.logo,
+      'exp': instance.exp,
     };

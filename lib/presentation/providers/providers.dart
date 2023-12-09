@@ -42,14 +42,14 @@ final selectedCompanyProvider = StateProvider<int>((ref) {
 final companyProvider = StateProvider<List<Company>>((ref) {
   return [
     Company(
-      name: 'google',
-      role: 'ceo',
-      email: 'google@gmail.com',
-      address: 'silicon',
-      phoneNumber: '09****09',
-      qr: '09****09',
-      logo: '09****09',
-    ),
+        name: 'google',
+        role: 'ceo',
+        email: 'google@gmail.com',
+        address: 'silicon',
+        phoneNumber: '09****09',
+        qr: '09****09',
+        logo: '09****09',
+        exp: '2025/03/09'),
     Company(
       name: 'facebook',
       role: 'marketting',
@@ -57,6 +57,7 @@ final companyProvider = StateProvider<List<Company>>((ref) {
       address: 'silicon',
       phoneNumber: '09****09',
       qr: '09****09',
+      exp: '2025/03/09',
       logo: '09****09',
     ),
     Company(
@@ -66,6 +67,7 @@ final companyProvider = StateProvider<List<Company>>((ref) {
       address: 'silicon',
       phoneNumber: '09****09',
       qr: '09****09',
+      exp: '2025/03/09',
       logo: '09****09',
     ),
     Company(
@@ -75,6 +77,7 @@ final companyProvider = StateProvider<List<Company>>((ref) {
       address: 'silicon',
       phoneNumber: '09****09',
       qr: '09****09',
+      exp: '2025/03/09',
       logo: '09****09',
     ),
     Company(
@@ -84,6 +87,7 @@ final companyProvider = StateProvider<List<Company>>((ref) {
       address: 'silicon',
       phoneNumber: '09****09',
       qr: '09****09',
+      exp: '2025/03/09',
       logo: '09****09',
     ),
     Company(
@@ -93,6 +97,7 @@ final companyProvider = StateProvider<List<Company>>((ref) {
       address: 'silicon',
       phoneNumber: '09****09',
       qr: '09****09',
+      exp: '2025/03/09',
       logo: '09****09',
     ),
   ];

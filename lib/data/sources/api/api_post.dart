@@ -32,7 +32,7 @@ class APIPost {
       required String token,
       required BuildContext context}) async {
     //use dio package
-    const baseUrl = 'https://admin.my-digitalid.com/api/';
+    const baseUrl = 'https://portal.my-digitalid.com/api/';
     final dio = Dio(BaseOptions(
         baseUrl: baseUrl, headers: {"Authorization": "Bearer $token"}));
     //handle all errors that could occur using try catch
