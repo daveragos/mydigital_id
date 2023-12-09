@@ -120,7 +120,8 @@ class _CreditCardScreenState extends ConsumerState<HomeCardScreen> {
         final List<dynamic> responseData = response.data;
         try {
           final companies = responseData
-              .map((e) => CompanyModel.fromJson(e.toString()).toEntity())
+              .map((e) =>
+                  CompanyModel.fromJson(e as Map<String, dynamic>).toEntity())
               .toList();
           ref.read(companyProvider.notifier).state = companies;
         } catch (e) {

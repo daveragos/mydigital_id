@@ -1,17 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mydigital_id/app/theme/theme.dart';
 import 'package:mydigital_id/app/utils/extensions.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mydigital_id/domain/entities/company.dart';
 
 import 'package:mydigital_id/presentation/providers/providers.dart';
 
-class QRWidget extends ConsumerWidget {
+class QRWidget extends ConsumerStatefulWidget {
   const QRWidget({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final company = ref.watch(companyProvider);
-    final companyIndex = ref.watch(selectedCompanyProvider);
-    final selectedcompany = company[companyIndex];
+  ConsumerState<QRWidget> createState() => _QRWidgetState();
+}
+
+class _QRWidgetState extends ConsumerState<QRWidget> {
+  @override
+  void initState() {
+    super.initState();
+    getCompany();
+  }
+
+  late List<Company> company;
+  late int companyIndex;
+  late Company selectedCompany;
+  late String qr;
+  bool isNull = false;
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -22,9 +38,14 @@ class QRWidget extends ConsumerWidget {
         SizedBox(
           width: 200,
           height: 200,
-          child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: const Placeholder()),
+          child: SvgPicture.network(
+            selectedCompany.qr,
+            semanticsLabel: 'Scan for more info',
+            placeholderBuilder: (context) => const Center(
+              child: CircularProgressIndicator(),
+            ),
+            // You can customize other properties as needed
+          ),
         ),
         const SizedBox(
           height: 20,
@@ -35,7 +56,7 @@ class QRWidget extends ConsumerWidget {
             style: context.textTheme.headlineMedium,
           ),
           Text(
-            selectedcompany.name,
+            selectedCompany.name,
             style: context.textTheme.headlineMedium,
           ),
           const SizedBox(
@@ -45,5 +66,22 @@ class QRWidget extends ConsumerWidget {
         ]),
       ],
     );
+  }
+
+  void getCompany() {
+    company = ref.watch(companyProvider);
+    if (company.isEmpty) {
+      setState(() {
+        isNull = true;
+        qr = 'assets/images/Asset2.png';
+      });
+    } else {
+      setState(() {
+        isNull = false;
+      });
+    }
+
+    companyIndex = ref.watch(selectedCompanyProvider);
+    selectedCompany = company[companyIndex];
   }
 }

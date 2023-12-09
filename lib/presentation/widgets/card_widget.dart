@@ -1,5 +1,7 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:mydigital_id/app/utils/extensions.dart';
 import 'package:mydigital_id/domain/entities/company.dart';
 import 'package:mydigital_id/domain/entities/user.dart';
@@ -26,7 +28,8 @@ class CardWidget extends ConsumerWidget {
         padding: const EdgeInsets.all(15.0),
         child: Column(
           children: [
-            _buildHeaderRow(companies[index].name, textStyle),
+            _buildHeaderRow(
+                companies[index].name, companies[index].qr, textStyle),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -41,24 +44,37 @@ class CardWidget extends ConsumerWidget {
                 ],
               ),
             ),
-            _buildFooterRow(companies[index].role, style)
+            _buildFooterRow(companies[index].exp, style)
           ],
         ),
       ),
     );
   }
 
-  Row _buildHeaderRow(String name, TextTheme style) {
+  Row _buildHeaderRow(String name, String logo, TextTheme style) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(name.toUpperCase(),
-            textAlign: TextAlign.center, style: style.displayMedium),
-        const SizedBox(width: 10.0),
-        const Icon(
-          Icons.join_right,
-          size: 50,
+        Expanded(
+          child: Text(
+            name.toUpperCase(),
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 25,
+            ),
+          ),
         ),
+        SizedBox(
+          width: 50,
+          height: 50,
+          child: SvgPicture.network(
+            logo,
+            semanticsLabel: "The Company's Logo",
+            placeholderBuilder: (context) => const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        )
       ],
     );
   }

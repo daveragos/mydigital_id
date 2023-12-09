@@ -78,6 +78,6 @@ class CompanyModel {
 
   String toJson() => json.encode(toMap());
 
-  factory CompanyModel.fromJson(String source) =>
-      CompanyModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory CompanyModel.fromJson(Map<String, dynamic> source) =>
+      CompanyModel.fromMap(source);
 }
