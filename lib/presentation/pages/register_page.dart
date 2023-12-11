@@ -1,17 +1,13 @@
 // ignore_for_file: avoid_print
 
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mydigital_id/app/constants/path_const.dart';
-import 'package:mydigital_id/app/constants/shared_const.dart';
 import 'package:mydigital_id/app/theme/theme.dart';
 import 'package:mydigital_id/data/sources/api/api_post.dart';
 import 'package:mydigital_id/app/utils/extensions.dart';
 import 'package:mydigital_id/presentation/widgets/textFField_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});

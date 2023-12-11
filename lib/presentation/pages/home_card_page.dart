@@ -8,7 +8,6 @@ import 'package:mydigital_id/app/constants/shared_const.dart';
 import 'package:mydigital_id/data/model/company_model.dart';
 import 'package:mydigital_id/data/model/user_model.dart';
 import 'package:mydigital_id/data/sources/api/api_post.dart';
-import 'package:mydigital_id/domain/entities/company.dart';
 import 'package:mydigital_id/presentation/widgets/detail_widget.dart';
 import 'package:mydigital_id/presentation/widgets/drawer_widget.dart';
 import 'package:mydigital_id/presentation/widgets/no_card_widget.dart';
