@@ -1,9 +1,6 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:mydigital_id/app/utils/extensions.dart';
-import 'package:mydigital_id/domain/entities/company.dart';
 import 'package:mydigital_id/domain/entities/user.dart';
 import '../providers/providers.dart';
 
@@ -28,8 +25,7 @@ class NoCardWidget extends ConsumerWidget {
         padding: const EdgeInsets.all(15.0),
         child: Column(
           children: [
-            _buildHeaderRow(
-                "My Digital Id", 'assets/images/Asset2.png', textStyle),
+            _buildHeaderRow("My Digital Id", textStyle),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -49,7 +45,7 @@ class NoCardWidget extends ConsumerWidget {
     );
   }
 
-  Row _buildHeaderRow(String name, String logo, TextTheme style) {
+  Row _buildHeaderRow(String name, TextTheme style) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -62,7 +58,10 @@ class NoCardWidget extends ConsumerWidget {
             ),
           ),
         ),
-        SizedBox(width: 50, height: 50, child: Image.asset(logo))
+        SizedBox(
+            width: 50,
+            height: 50,
+            child: Image.asset('assets/images/Asset2.png'))
       ],
     );
   }

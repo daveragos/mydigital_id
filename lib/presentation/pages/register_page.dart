@@ -13,16 +13,22 @@ import 'package:mydigital_id/app/utils/extensions.dart';
 import 'package:mydigital_id/presentation/widgets/textFField_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends ConsumerStatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends ConsumerState<LoginScreen> {
+class _LoginScreenState extends ConsumerState<RegisterScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -39,7 +45,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               const SizedBox(height: 20),
-              Image.asset('assets/images/Asset4.png'),
+              Image.asset('assets/images/Asset1.png'),
               const SizedBox(
                 height: 10,
               ),
@@ -53,13 +59,49 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     children: [
                       Center(
                         child: Text(
-                          'Login',
+                          'Register',
                           style: text.headlineLarge,
                         ),
                       ),
                       const SizedBox(height: 20),
+                      //photo picker
+                      CircleAvatar(
+                        radius: 50,
+                        child: IconButton(
+                          icon: const Icon(Icons.camera_alt),
+                          onPressed: () {},
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                       TextFField(
-                        icon: Icons.email_rounded,
+                          icon: Icons.abc_rounded,
+                          controller: firstNameController,
+                          hintText: 'enter your first name',
+                          labelText: 'First Name'),
+                      const SizedBox(height: 20),
+                      TextFField(
+                          icon: Icons.abc_rounded,
+                          controller: lastNameController,
+                          hintText: 'enter your last name',
+                          labelText: 'Last Name'),
+                      const SizedBox(height: 20),
+                      TextFField(
+                        icon: Icons.location_on_rounded,
+                        controller: addressController,
+                        hintText: 'enter your address',
+                        labelText: 'Address',
+                        keyboardType: TextInputType.streetAddress,
+                      ),
+                      const SizedBox(height: 20),
+                      TextFField(
+                          icon: Icons.phone,
+                          controller: phoneNumberController,
+                          hintText: 'enter your phone number',
+                          labelText: 'Phone Number',
+                          keyboardType: TextInputType.phone),
+                      const SizedBox(height: 20),
+                      TextFField(
+                        icon: Icons.email,
                         controller: emailController,
                         hintText: 'enter your email',
                         labelText: 'Email',
@@ -67,11 +109,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       const SizedBox(height: 20),
                       TextFField(
-                          icon: Icons.lock_rounded,
-                          controller: passwordController,
-                          hintText: 'enter your password',
-                          labelText: 'Password',
-                          hide: true),
+                        icon: Icons.lock,
+                        controller: passwordController,
+                        hintText: 'enter your password',
+                        labelText: 'Password',
+                        hide: true,
+                      ),
+                      const SizedBox(height: 20),
+                      TextFField(
+                        icon: Icons.lock_reset,
+                        controller: confirmPasswordController,
+                        hintText: 'confirm your password',
+                        labelText: 'Confirm',
+                        hide: true,
+                      ),
                       const SizedBox(height: 20),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -84,10 +135,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            _login();
+                            // _register();
                           }
                         },
-                        child: const Text('Login'),
+                        child: const Text('Register'),
                       ),
                       const SizedBox(height: 10),
                       Row(
@@ -96,11 +147,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           Expanded(
                             child: TextButton(
                               onPressed: () {
-                                GoRouter.of(context)
-                                    .push(PathConst.registerPath);
+                                GoRouter.of(context).pop();
                               },
-                              child:
-                                  const Text("Don't have an Account? Sign Up"),
+                              child: const Text("Have an Account? Login"),
                             ),
                           ),
                         ],
@@ -109,18 +158,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: primaryColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Image.asset(
-                  'assets/images/Intersect1.png',
-                  fit: BoxFit.cover,
-                ),
-              )
             ],
           ),
         ),
@@ -128,28 +165,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
-  void _login() async {
+  void _register() async {
     try {
-      const url = 'user-login';
+      const url = 'Users';
       final data = {
+        'firstName': firstNameController.text,
+        'lastName': lastNameController.text,
+        'address': addressController.text,
+        'phoneNumber': phoneNumberController.text,
         'email': emailController.text,
         'password': passwordController.text,
       };
       final response =
           await APIPost().postRequest(route: url, data: data, context: context);
       if (response.statusCode == 200) {
-        var responseData = response.data['user'];
-        String userJson = jsonEncode(responseData);
-        //change the user to usermodel then to entity
-        //todo storing the user and token working
-        SharedPreferences pref = await SharedPreferences.getInstance();
-        await pref.setString(
-          SharedConst.user,
-          userJson,
-        );
-        await pref.setString(
-            SharedConst.token, response.data['token'].toString());
-        context.go(PathConst.digitalIdPath);
+        context.pop();
       } else {
         print('status code : ${response.statusCode}');
       }

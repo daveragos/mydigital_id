@@ -66,7 +66,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   ListTile(
                     leading: const Icon(Icons.phone_iphone_rounded),
                     title: const Text('Phone Number'),
-                    trailing: Text('${user.phone_number}'),
+                    trailing: Text(user.phone_number),
                   ),
                 ],
               ),

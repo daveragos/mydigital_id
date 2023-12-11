@@ -4,4 +4,5 @@ class PathConst {
   static String userPath = ':user';
   static String profilePath = '/profile';
   static String loginPath = '/login';
+  static String registerPath = '/register';
 }

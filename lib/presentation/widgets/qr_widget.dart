@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mydigital_id/app/theme/theme.dart';
 import 'package:mydigital_id/app/utils/extensions.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -27,11 +26,9 @@ class QRWidget extends ConsumerWidget {
           child: SvgPicture.network(
             selectedcompany.qr,
             semanticsLabel: 'Scan for more info',
-
             placeholderBuilder: (BuildContext context) => Container(
                 padding: const EdgeInsets.all(30.0),
                 child: const CircularProgressIndicator()),
-            // You can customize other properties as needed
           ),
         ),
         const SizedBox(
@@ -40,10 +37,6 @@ class QRWidget extends ConsumerWidget {
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text(
             'Scan Me',
-            style: context.textTheme.headlineMedium,
-          ),
-          Text(
-            selectedcompany.name,
             style: context.textTheme.headlineMedium,
           ),
           const SizedBox(
