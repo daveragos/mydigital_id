@@ -1,52 +1,51 @@
 import 'package:url_launcher/url_launcher.dart';
 
 class UrlHelper {
-  dynamic launchEmail() async {
+  dynamic launchEmail(String email) async {
     try {
-      Uri email = Uri(
+      Uri emailUri = Uri(
         scheme: 'mailto',
-        path: "abcd@gmail.com",
+        path: email,
         queryParameters: {'subject': "Testing subject"},
       );
 
-      await launchUrl(email);
+      await launchUrl(emailUri);
     } catch (e) {
       print(e.toString());
     }
   }
 
-  dynamic launchTel() async {
+  dynamic launchTel(String phoneNumber) async {
     try {
-      Uri tel = Uri(
+      Uri telUri = Uri(
         scheme: 'tel',
-        path: "+1234567890",
+        path: phoneNumber,
       );
 
-      await launchUrl(tel);
+      await launchUrl(telUri);
     } catch (e) {
       print(e.toString());
     }
   }
 
-  dynamic launchSms() async {
+  dynamic launchSms(String phoneNumber) async {
     try {
-      Uri sms = Uri(
+      Uri smsUri = Uri(
         scheme: 'sms',
-        path: "+1234567890",
+        path: phoneNumber,
       );
 
-      await launchUrl(sms);
+      await launchUrl(smsUri);
     } catch (e) {
       print(e.toString());
     }
   }
 
-  dynamic launchBrowser() async {
+  dynamic launchBrowser(String url) async {
     try {
-      Uri link =
-          Uri(scheme: 'https', path: "www.github.com/mustafatahirhussein");
+      Uri linkUri = Uri(scheme: 'https', path: url);
 
-      await launchUrl(link);
+      await launchUrl(linkUri);
     } catch (e) {
       print(e.toString());
     }

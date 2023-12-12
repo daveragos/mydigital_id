@@ -27,7 +27,7 @@ class APIPost {
     }
   }
 
-  getRequest(
+  Future<Response> getRequest(
       {required String route,
       required String token,
       required BuildContext context}) async {
@@ -41,9 +41,11 @@ class APIPost {
       return response;
     } on DioException catch (e) {
       checkException(e, context);
+      rethrow; // Add this line to rethrow the exception
     } catch (e) {
       alertDialog.showAlert(
           context: context, title: 'Error', content: e.toString());
+      rethrow; // Add this line to rethrow the exception
     }
   }
 
