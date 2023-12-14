@@ -40,15 +40,5 @@ final selectedCompanyProvider = StateProvider<int>((ref) {
 });
 
 final companyProvider = StateProvider<List<Company>>((ref) {
-  return [
-    Company(
-        name: 'My Digital Id',
-        role: 'role',
-        email: 'email',
-        address: 'address',
-        phoneNumber: 'phoneNumber',
-        qr: 'assets/images/Asset2.png',
-        logo: 'assets/images/Asset3.png',
-        exp: 'exp')
-  ];
+  return [];
 });

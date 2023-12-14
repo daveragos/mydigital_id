@@ -7,12 +7,16 @@ import 'package:mydigital_id/domain/entities/user.dart';
 import '../providers/providers.dart';
 
 class CardWidget extends ConsumerWidget {
-  const CardWidget({Key? key}) : super(key: key);
-
+  CardWidget({
+    Key? key,
+    required this.companies,
+    this.failed = false,
+  }) : super(key: key);
+  List<Company> companies;
+  bool failed;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userStateProvider);
-    final companies = ref.watch(companyProvider);
     const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 20);
     final color = context.colorScheme;
     final textStyle = context.textTheme;
@@ -66,13 +70,15 @@ class CardWidget extends ConsumerWidget {
         SizedBox(
           width: 50,
           height: 50,
-          child: SvgPicture.network(
-            logo,
-            semanticsLabel: "The Company's Logo",
-            placeholderBuilder: (context) => const Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
+          child: failed
+              ? Image.asset(logo)
+              : SvgPicture.network(
+                  logo,
+                  semanticsLabel: "The Company's Logo",
+                  placeholderBuilder: (context) => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
         )
       ],
     );
@@ -97,7 +103,16 @@ class CardWidget extends ConsumerWidget {
   Column _buildLeftColumn(TextStyle style, String url) {
     return Column(
       children: [
-        Expanded(child: Image.network(url)),
+        Expanded(
+          child: FadeInImage.assetNetwork(
+            placeholder: 'assets/images/Asset3.png',
+            image: url,
+            fit: BoxFit.cover,
+            imageErrorBuilder: (context, error, stackTrace) {
+              return Image.asset('assets/images/Asset3.png');
+            },
+          ),
+        ),
         const SizedBox(
           height: 20,
         ),

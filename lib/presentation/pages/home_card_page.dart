@@ -17,88 +17,30 @@ import '../../app/utils/extensions.dart';
 import '../providers/providers.dart';
 import '../widgets/card_widget.dart';
 import '../widgets/qr_widget.dart';
+import 'package:mydigital_id/domain/entities/company.dart';
 
 class HomeCardScreen extends ConsumerStatefulWidget {
   const HomeCardScreen({super.key});
 
   @override
-  ConsumerState<HomeCardScreen> createState() => _CreditCardScreenState();
+  ConsumerState<HomeCardScreen> createState() => _HomeCardScreenState();
 }
 
-class _CreditCardScreenState extends ConsumerState<HomeCardScreen> {
+class _HomeCardScreenState extends ConsumerState<HomeCardScreen> {
   @override
   void initState() {
     super.initState();
-    getUser();
+    getCompanies();
   }
 
-  var isempty = false;
-  @override
-  Widget build(BuildContext context) {
-    // final user = ref.watch(userStateNotifierProvider);
-    final companies = ref.watch(companyProvider.notifier).state;
-    final selectedCompany = ref.watch(selectedCompanyProvider);
-    final color = context.colorScheme;
-    return Scaffold(
-      backgroundColor: color.secondaryContainer,
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Digital Cards'),
-      ),
-      drawer: BuildDrawer(color: color, context: context),
-      body: isempty
-          ? ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: [
-                Swiper(
-                  index: 0,
-                  itemCount: 1,
-                  allowImplicitScrolling: true,
-                  loop: true,
-                  layout: SwiperLayout.TINDER,
-                  itemWidth: 400,
-                  itemHeight: 250,
-                  itemBuilder: (BuildContext context, int index) {
-                    return const NoCardWidget();
-                  },
-                ),
-                const NoQRWidget(),
-              ],
-            )
-          : ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: [
-                Swiper(
-                  index: selectedCompany,
-                  itemCount: companies.length,
-                  allowImplicitScrolling: true,
-                  loop: true,
-                  onIndexChanged: (index) {
-                    ref.read(selectedCompanyProvider.notifier).state = index;
-                  },
-                  onTap: (index) {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        final company = companies[index];
-                        return DetailWidget(color: color, company: company);
-                      },
-                    );
-                  },
-                  layout: SwiperLayout.TINDER,
-                  itemWidth: 400,
-                  itemHeight: 250,
-                  itemBuilder: (BuildContext context, int index) {
-                    return const CardWidget();
-                  },
-                ),
-                const QRWidget(),
-              ],
-            ),
-    );
-  }
+  bool isempty = false;
+  List<Company> companies = [];
+  bool isLoading = false;
+  bool failed = false;
 
-  void getUser() async {
+  void getCompanies() async {
+    setState(() => isLoading = true);
+
     //todo no working
     SharedPreferences pref = await SharedPreferences.getInstance();
     final token = pref.getString(SharedConst.token);
@@ -110,9 +52,11 @@ class _CreditCardScreenState extends ConsumerState<HomeCardScreen> {
       ref.read(userStateProvider.notifier).state = userEntity;
       final id = userEntity.id;
       final route = 'user/$id/company';
+
       //todo! handle when null
       final response = await APIPost()
           .getRequest(route: route, token: token, context: context);
+
       if (response.statusCode == 200) {
         final List<dynamic> responseData = response.data;
         if (responseData.isEmpty) {
@@ -121,16 +65,109 @@ class _CreditCardScreenState extends ConsumerState<HomeCardScreen> {
           });
         } else {
           try {
-            final companies = responseData
+            companies = responseData
                 .map((e) =>
                     CompanyModel.fromJson(e as Map<String, dynamic>).toEntity())
                 .toList();
             ref.read(companyProvider.notifier).state = companies;
+            setState(() {
+              isempty = false;
+            });
           } catch (e) {
             print(e);
           }
         }
       }
+      if (response.statusCode == 404) {
+        final responseData = response.data;
+        try {
+          Company company = CompanyModel.fromJson(responseData).toEntity();
+          companies.add(company);
+          ref.read(companyProvider.notifier).state = [company];
+          setState(() {
+            isempty = false;
+          });
+          setState(() {
+            failed = true;
+          });
+        } catch (e) {
+          print(e);
+        }
+      }
     }
+
+    setState(() => isLoading = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedCompany = ref.watch(selectedCompanyProvider);
+    final color = context.colorScheme;
+    return Scaffold(
+      backgroundColor: color.secondaryContainer,
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Digital Cards'),
+      ),
+      drawer: BuildDrawer(color: color, context: context),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : isempty
+              ? ListView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  children: [
+                    Swiper(
+                      index: 0,
+                      itemCount: 1,
+                      allowImplicitScrolling: true,
+                      loop: true,
+                      layout: SwiperLayout.TINDER,
+                      itemWidth: 400,
+                      itemHeight: 250,
+                      itemBuilder: (BuildContext context, int index) {
+                        return const NoCardWidget();
+                      },
+                    ),
+                    const NoQRWidget(),
+                  ],
+                )
+              : ListView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  children: [
+                    Swiper(
+                      index: selectedCompany,
+                      itemCount: companies.length,
+                      allowImplicitScrolling: true,
+                      loop: true,
+                      onIndexChanged: (index) {
+                        ref.read(selectedCompanyProvider.notifier).state =
+                            index;
+                      },
+                      onTap: (index) {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            final company = companies[index];
+                            return DetailWidget(color: color, company: company);
+                          },
+                        );
+                      },
+                      layout: SwiperLayout.TINDER,
+                      itemWidth: 400,
+                      itemHeight: 250,
+                      itemBuilder: (BuildContext context, int index) {
+                        return CardWidget(
+                          companies: companies,
+                          failed: failed,
+                        );
+                      },
+                    ),
+                    QRWidget(
+                      company: companies,
+                      failed: failed,
+                    ),
+                  ],
+                ),
+    );
   }
 }

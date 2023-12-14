@@ -10,11 +10,9 @@ class NoCardWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userStateProvider);
-    final companies = ref.watch(companyProvider);
     const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 20);
     final color = context.colorScheme;
     final textStyle = context.textTheme;
-    final index = ref.watch(selectedCompanyProvider);
 
     return Card(
       elevation: 4.0,
@@ -58,10 +56,6 @@ class NoCardWidget extends ConsumerWidget {
             ),
           ),
         ),
-        SizedBox(
-            width: 50,
-            height: 50,
-            child: Image.asset('assets/images/Asset2.png'))
       ],
     );
   }
