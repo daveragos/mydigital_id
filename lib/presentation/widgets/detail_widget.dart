@@ -22,12 +22,18 @@ class DetailWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const CircleAvatar(
-              radius: 30,
-              child: Icon(
-                Icons.join_right,
-                size: 50,
-              )),
+          CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.grey,
+            child: FadeInImage.assetNetwork(
+              placeholder: 'assets/images/Asset2.png',
+              image: company.logo,
+              fit: BoxFit.cover,
+              imageErrorBuilder: (context, error, stackTrace) {
+                return Image.asset('assets/images/Asset2.png');
+              },
+            ),
+          ),
           ListTile(title: Text('Name : ${company.name}')),
           ListTile(
             title: Text('Email : ${company.email}'),

@@ -17,6 +17,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   Widget build(BuildContext context) {
     final user = ref.watch(userStateProvider);
     final companies = ref.watch(companyProvider);
+    final bool isDummy = companies[0].name == 'MyDigital ID';
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -28,11 +29,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           children: [
             const SizedBox(height: 20),
             CircleAvatar(
-                radius: 60,
-                child: Image.network(
-                  user.profile_pic_url,
-                  fit: BoxFit.fitHeight,
-                )),
+              radius: 60,
+              child: FadeInImage.assetNetwork(
+                placeholder: 'assets/images/Asset3.png',
+                image: user.profile_pic_url,
+                fit: BoxFit.cover,
+                imageErrorBuilder: (context, error, stackTrace) {
+                  return Image.asset('assets/images/Asset3.png');
+                },
+              ),
+            ),
             const SizedBox(height: 10),
             Center(
               child: Text(
@@ -78,39 +84,56 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: context.colorScheme.tertiaryContainer),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Companies',
-                    style: context.textTheme.displaySmall,
-                  ),
-                  ...companies.map((company) => Column(
-                        children: [
-                          ListTile(
-                              leading: const Icon(Icons.business),
-                              title: Text(company.name),
-                              subtitle: Text(company.role),
-                              // iconColor: primaryColor,
-                              trailing: IconButton(
-                                icon: const Icon(
-                                  Icons.arrow_forward_ios_sharp,
-                                  color: primaryColor,
-                                ),
-                                onPressed: () {
-                                  //setting the index of the touched to selectedCompanyProvider and popping the page
-                                  final index = companies.indexOf(company);
-                                  ref
-                                      .read(selectedCompanyProvider.notifier)
-                                      .state = index;
-                                  context.go(PathConst.digitalIdPath);
-                                },
-                              )),
-                          const Divider(),
-                        ],
-                      )),
-                ],
-              ),
+              child: isDummy
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                          Text(
+                            'Companies',
+                            style: context.textTheme.displaySmall,
+                          ),
+                          const ListTile(
+                            leading: Icon(Icons.business_outlined),
+                            title: Text('No Company Available'),
+                          )
+                        ])
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Companies',
+                          style: context.textTheme.displaySmall,
+                        ),
+                        //i want to check the isDummy and if its true then show "No Company" in listtile but if false procees
+
+                        ...companies.map((company) => Column(
+                              children: [
+                                ListTile(
+                                    leading: const Icon(Icons.business),
+                                    title: Text(company.name),
+                                    subtitle: Text(company.role),
+                                    // iconColor: primaryColor,
+                                    trailing: IconButton(
+                                      icon: const Icon(
+                                        Icons.arrow_forward_ios_sharp,
+                                        color: primaryColor,
+                                      ),
+                                      onPressed: () {
+                                        //setting the index of the touched to selectedCompanyProvider and popping the page
+                                        final index =
+                                            companies.indexOf(company);
+                                        ref
+                                            .read(selectedCompanyProvider
+                                                .notifier)
+                                            .state = index;
+                                        context.go(PathConst.digitalIdPath);
+                                      },
+                                    )),
+                                const Divider(),
+                              ],
+                            )),
+                      ],
+                    ),
             ),
           ],
         ),
