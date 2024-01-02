@@ -17,39 +17,33 @@ class CardWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userStateProvider);
-    const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 20);
+    const style = TextStyle(fontWeight: FontWeight.bold);
     final color = context.colorScheme;
     final textStyle = context.textTheme;
     final index = ref.watch(selectedCompanyProvider);
 
-    return Card(
-      elevation: 4.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          children: [
-            _buildHeaderRow(
-                companies[index].name, companies[index].qr, textStyle),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                      child: _buildLeftColumn(style, user.profile_pic_url)),
-                  const SizedBox(width: 25),
-                  Expanded(
-                      flex: 3,
-                      child: _buildRightColumn(
-                          style, user, companies[index], color)),
-                ],
-              ),
+    return Container(
+      decoration: BoxDecoration(shape: BoxShape.circle),
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        children: [
+          _buildHeaderRow(
+              companies[index].name, companies[index].qr, textStyle),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Expanded(child: _buildLeftColumn(style, user.profile_pic_url)),
+                const SizedBox(width: 25),
+                Expanded(
+                    flex: 3,
+                    child: _buildRightColumn(
+                        style, user, companies[index], color)),
+              ],
             ),
-            _buildFooterRow(companies[index].exp, style)
-          ],
-        ),
+          ),
+          _buildFooterRow(companies[index].exp, style)
+        ],
       ),
     );
   }

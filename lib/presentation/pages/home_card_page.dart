@@ -3,7 +3,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:mydigital_id/app/constants/shared_const.dart';
 import 'package:mydigital_id/data/model/company_model.dart';
 import 'package:mydigital_id/data/model/user_model.dart';
@@ -105,36 +104,68 @@ class _HomeCardScreenState extends ConsumerState<HomeCardScreen> {
     final color = context.colorScheme;
     return Scaffold(
       backgroundColor: color.secondaryContainer,
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Digital Cards'),
-      ),
       drawer: BuildDrawer(color: color, context: context),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : isempty
               ? ListView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  children: [
-                    Swiper(
-                      index: 0,
-                      itemCount: 1,
-                      allowImplicitScrolling: true,
-                      loop: true,
-                      layout: SwiperLayout.TINDER,
-                      itemWidth: 400,
-                      itemHeight: 250,
-                      itemBuilder: (BuildContext context, int index) {
-                        return const NoCardWidget();
-                      },
-                    ),
-                    const NoQRWidget(),
-                  ],
+                  children: [Text('no data')],
                 )
-              : ListView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  children: [
-                    Swiper(
+              : SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              color: Theme.of(context).primaryColor,
+                              child: const Row(
+                                children: [
+                                  CircleAvatar(),
+                                  Text(
+                                    'User',
+                                  )
+                                ],
+                              ),
+                            ),
+                            Stack(
+                              alignment: AlignmentDirectional.topEnd,
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor:
+                                      Theme.of(context).primaryColor,
+                                ),
+                                Badge(
+                                  child: const Text('3'),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Flexible(
+                          child: SingleChildScrollView(
+                        child: ListView.builder(
+                          itemCount: companies.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              onTap: () {},
+                              title: Text(companies[index].name),
+                            );
+                          },
+                        ),
+                      )),
+                    ],
+                  ),
+                ),
+    );
+  }
+}
+/*
+Swiper(
                       index: selectedCompany,
                       itemCount: companies.length,
                       allowImplicitScrolling: true,
@@ -166,8 +197,4 @@ class _HomeCardScreenState extends ConsumerState<HomeCardScreen> {
                       company: companies,
                       failed: failed,
                     ),
-                  ],
-                ),
-    );
-  }
-}
+*/

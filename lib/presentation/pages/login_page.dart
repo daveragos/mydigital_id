@@ -30,7 +30,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final text = context.textTheme;
     final color = context.colorScheme;
     return Scaffold(
-      backgroundColor: secondaryColor,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -53,11 +52,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     children: [
                       Center(
                         child: Text(
-                          'Login',
-                          style: text.headlineLarge,
+                          'LOGIN',
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: color.primary,
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                       TextFField(
                         icon: Icons.email_rounded,
                         controller: emailController,

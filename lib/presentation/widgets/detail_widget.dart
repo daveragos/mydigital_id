@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mydigital_id/app/utils/launch_helper.dart';
 import 'package:mydigital_id/domain/entities/company.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailWidget extends StatelessWidget {
   const DetailWidget({
@@ -36,9 +38,15 @@ class DetailWidget extends StatelessWidget {
           ),
           ListTile(title: Text('Name : ${company.name}')),
           ListTile(
+            onTap: () {
+              UrlHelper().launchEmail(company.email);
+            },
             title: Text('Email : ${company.email}'),
           ),
           ListTile(
+            onTap: () {
+              UrlHelper().launchTel(company.phoneNumber);
+            },
             title: Text('Phone Number : ${company.phoneNumber}'),
           ),
           ListTile(

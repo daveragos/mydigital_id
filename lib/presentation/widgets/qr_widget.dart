@@ -26,9 +26,11 @@ class QRWidget extends ConsumerWidget {
         const SizedBox(
           height: 50,
         ),
-        SizedBox(
+        Container(
+          decoration: const BoxDecoration(color: Colors.amber),
           width: 200,
           height: 200,
+          padding: EdgeInsets.all(10),
           child: failed
               ? Image.asset(selectedcompany.qr)
               : SvgPicture.network(

@@ -39,19 +39,11 @@ class APIPost {
         validateStatus: (status) {
           return status! < 500;
         }));
-    //handle all errors that could occur using try catch
     try {
       final response = await dio.get(route);
-      //i want to check the status code and
-      //if its 200 pass as it is
-      //but if it is 404 i want to send my own response
-      //so i can handle it in the UI
       if (response.statusCode == 200) {
-        //add success to the coming response and return the editted reponse
-
         return response;
       } else if (response.statusCode == 404) {
-        // Create your own response here
         final customResponse = Response(
           requestOptions: RequestOptions(),
           statusCode: 404,
@@ -66,17 +58,14 @@ class APIPost {
             "company_logo": "assets/images/Asset3.png"
           },
         );
-
         return customResponse;
       } else {
-        // Handle other status codes here
         alertDialog.showAlert(
           context: context,
           title: 'Error',
           content: 'Unexpected status code: ${response.statusCode}',
         );
       }
-//
       return response;
     } on DioException catch (e) {
       checkException(e, context);

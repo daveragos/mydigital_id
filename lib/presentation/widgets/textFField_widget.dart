@@ -20,39 +20,29 @@ class TextFField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          labelText,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+    return TextFormField(
+      controller: controller,
+      obscureText: hide,
+      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+      decoration: InputDecoration(
+        iconColor: primaryColor,
+        fillColor: primaryColor,
+        labelText: labelText,
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(
+              50), // Adjust the value to make it more or less round
         ),
-        TextFormField(
-          controller: controller,
-          obscureText: hide,
-          onTapOutside: (event) =>
-              FocusManager.instance.primaryFocus?.unfocus(),
-          decoration: InputDecoration(
-            iconColor: primaryColor,
-            fillColor: primaryColor,
-            labelText: labelText,
-            prefixIcon: Icon(icon),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(
-                  50), // Adjust the value to make it more or less round
-            ),
-            errorStyle: const TextStyle(color: Colors.red),
-            hintText: hintText,
-          ),
-          keyboardType: keyboardType,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please $hintText';
-            }
-            return null;
-          },
-        ),
-      ],
+        errorStyle: const TextStyle(color: Colors.red),
+        hintText: hintText,
+      ),
+      keyboardType: keyboardType,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please $hintText';
+        }
+        return null;
+      },
     );
   }
 }

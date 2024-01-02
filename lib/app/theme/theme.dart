@@ -42,5 +42,5 @@ class AppTheme {
       appBarStyle: FlexAppBarStyle.primary);
 }
 
-const primaryColor = Color(0xFFF97642);
-const secondaryColor = Color(0xFFC2ACA1);
+const primaryColor = Color(0xFF2669FE);
+const secondaryColor = Color(0xFF2669FE);
