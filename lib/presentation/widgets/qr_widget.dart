@@ -9,16 +9,14 @@ import 'package:mydigital_id/presentation/providers/providers.dart';
 class QRWidget extends ConsumerWidget {
   QRWidget({
     super.key,
-    required this.company,
+    required this.qrCode,
     this.failed = false,
   });
-  List<Company> company;
+  String qrCode;
   bool failed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final companyIndex = ref.watch(selectedCompanyProvider);
-    final selectedcompany = company[companyIndex];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -27,14 +25,15 @@ class QRWidget extends ConsumerWidget {
           height: 50,
         ),
         Container(
-          decoration: const BoxDecoration(color: Colors.amber),
+          decoration: BoxDecoration(
+              color: Colors.amber, borderRadius: BorderRadius.circular(10)),
           width: 200,
           height: 200,
           padding: EdgeInsets.all(10),
           child: failed
-              ? Image.asset(selectedcompany.qr)
+              ? Image.asset(qrCode)
               : SvgPicture.network(
-                  selectedcompany.qr,
+                  qrCode,
                   semanticsLabel: 'Scan for more info',
                   placeholderBuilder: (BuildContext context) => Container(
                       padding: const EdgeInsets.all(30.0),

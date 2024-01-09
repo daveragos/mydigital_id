@@ -28,6 +28,7 @@ mixin _$Company {
   String get qr => throw _privateConstructorUsedError;
   String get logo => throw _privateConstructorUsedError;
   String get exp => throw _privateConstructorUsedError;
+  double get rating => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,7 +48,8 @@ abstract class $CompanyCopyWith<$Res> {
       String phoneNumber,
       String qr,
       String logo,
-      String exp});
+      String exp,
+      double rating});
 }
 
 /// @nodoc
@@ -71,6 +73,7 @@ class _$CompanyCopyWithImpl<$Res, $Val extends Company>
     Object? qr = null,
     Object? logo = null,
     Object? exp = null,
+    Object? rating = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -105,6 +108,10 @@ class _$CompanyCopyWithImpl<$Res, $Val extends Company>
           ? _value.exp
           : exp // ignore: cast_nullable_to_non_nullable
               as String,
+      rating: null == rating
+          ? _value.rating
+          : rating // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
@@ -124,7 +131,8 @@ abstract class _$$CompanyImplCopyWith<$Res> implements $CompanyCopyWith<$Res> {
       String phoneNumber,
       String qr,
       String logo,
-      String exp});
+      String exp,
+      double rating});
 }
 
 /// @nodoc
@@ -146,6 +154,7 @@ class __$$CompanyImplCopyWithImpl<$Res>
     Object? qr = null,
     Object? logo = null,
     Object? exp = null,
+    Object? rating = null,
   }) {
     return _then(_$CompanyImpl(
       name: null == name
@@ -180,6 +189,10 @@ class __$$CompanyImplCopyWithImpl<$Res>
           ? _value.exp
           : exp // ignore: cast_nullable_to_non_nullable
               as String,
+      rating: null == rating
+          ? _value.rating
+          : rating // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -195,7 +208,8 @@ class _$CompanyImpl with DiagnosticableTreeMixin implements _Company {
       required this.phoneNumber,
       required this.qr,
       required this.logo,
-      required this.exp});
+      required this.exp,
+      required this.rating});
 
   factory _$CompanyImpl.fromJson(Map<String, dynamic> json) =>
       _$$CompanyImplFromJson(json);
@@ -216,10 +230,12 @@ class _$CompanyImpl with DiagnosticableTreeMixin implements _Company {
   final String logo;
   @override
   final String exp;
+  @override
+  final double rating;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Company(name: $name, role: $role, email: $email, address: $address, phoneNumber: $phoneNumber, qr: $qr, logo: $logo, exp: $exp)';
+    return 'Company(name: $name, role: $role, email: $email, address: $address, phoneNumber: $phoneNumber, qr: $qr, logo: $logo, exp: $exp, rating: $rating)';
   }
 
   @override
@@ -234,7 +250,8 @@ class _$CompanyImpl with DiagnosticableTreeMixin implements _Company {
       ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
       ..add(DiagnosticsProperty('qr', qr))
       ..add(DiagnosticsProperty('logo', logo))
-      ..add(DiagnosticsProperty('exp', exp));
+      ..add(DiagnosticsProperty('exp', exp))
+      ..add(DiagnosticsProperty('rating', rating));
   }
 
   @override
@@ -250,13 +267,14 @@ class _$CompanyImpl with DiagnosticableTreeMixin implements _Company {
                 other.phoneNumber == phoneNumber) &&
             (identical(other.qr, qr) || other.qr == qr) &&
             (identical(other.logo, logo) || other.logo == logo) &&
-            (identical(other.exp, exp) || other.exp == exp));
+            (identical(other.exp, exp) || other.exp == exp) &&
+            (identical(other.rating, rating) || other.rating == rating));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, name, role, email, address, phoneNumber, qr, logo, exp);
+  int get hashCode => Object.hash(runtimeType, name, role, email, address,
+      phoneNumber, qr, logo, exp, rating);
 
   @JsonKey(ignore: true)
   @override
@@ -281,7 +299,8 @@ abstract class _Company implements Company {
       required final String phoneNumber,
       required final String qr,
       required final String logo,
-      required final String exp}) = _$CompanyImpl;
+      required final String exp,
+      required final double rating}) = _$CompanyImpl;
 
   factory _Company.fromJson(Map<String, dynamic> json) = _$CompanyImpl.fromJson;
 
@@ -301,6 +320,8 @@ abstract class _Company implements Company {
   String get logo;
   @override
   String get exp;
+  @override
+  double get rating;
   @override
   @JsonKey(ignore: true)
   _$$CompanyImplCopyWith<_$CompanyImpl> get copyWith =>

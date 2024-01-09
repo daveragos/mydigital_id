@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mydigital_id/app/utils/extensions.dart';
+import 'package:mydigital_id/domain/entities/company.dart';
 import 'package:mydigital_id/domain/entities/user.dart';
 import '../providers/providers.dart';
 
 class NoCardWidget extends ConsumerWidget {
-  const NoCardWidget({Key? key}) : super(key: key);
-
+  NoCardWidget({Key? key, required this.company}) : super(key: key);
+  Company company;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userStateProvider);
@@ -23,20 +24,20 @@ class NoCardWidget extends ConsumerWidget {
         padding: const EdgeInsets.all(15.0),
         child: Column(
           children: [
-            _buildHeaderRow("My Digital Id", textStyle),
+            _buildHeaderRow(company.name, textStyle),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Expanded(
-                      child: _buildLeftColumn(style, user.profile_pic_url)),
+                  Expanded(child: _buildLeftColumn(style, company.logo)),
                   const SizedBox(width: 25),
                   Expanded(
-                      flex: 3, child: _buildRightColumn(style, user, color)),
+                      flex: 3,
+                      child: _buildRightColumn(style, user, company, color)),
                 ],
               ),
             ),
-            _buildFooterRow(DateTime.now().toString(), style)
+            _buildFooterRow(company.exp, style)
           ],
         ),
       ),
@@ -90,7 +91,8 @@ class NoCardWidget extends ConsumerWidget {
     );
   }
 
-  Column _buildRightColumn(TextStyle style, User user, ColorScheme color) {
+  Column _buildRightColumn(
+      TextStyle style, User user, Company company, ColorScheme color) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -98,10 +100,10 @@ class NoCardWidget extends ConsumerWidget {
             child: Text('Name : ${user.first_name} ${user.last_name}',
                 style: style.copyWith(color: color.primary))),
         Expanded(
-            child: Text('Email: ${user.email}',
+            child: Text('Position: ${company.role}',
                 style: style.copyWith(color: color.primary))),
         Expanded(
-            child: Text('Phone Number : ${user.phone_number}',
+            child: Text('Rating : ${company.rating}',
                 style: style.copyWith(color: color.primary))),
       ],
     );

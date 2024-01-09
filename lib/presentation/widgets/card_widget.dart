@@ -4,15 +4,16 @@ import 'package:flutter_svg/svg.dart';
 import 'package:mydigital_id/app/utils/extensions.dart';
 import 'package:mydigital_id/domain/entities/company.dart';
 import 'package:mydigital_id/domain/entities/user.dart';
+import 'package:mydigital_id/presentation/widgets/detail_widget.dart';
 import '../providers/providers.dart';
 
 class CardWidget extends ConsumerWidget {
   CardWidget({
     Key? key,
-    required this.companies,
+    required this.company,
     this.failed = false,
   }) : super(key: key);
-  List<Company> companies;
+  Company company;
   bool failed;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,30 +21,46 @@ class CardWidget extends ConsumerWidget {
     const style = TextStyle(fontWeight: FontWeight.bold);
     final color = context.colorScheme;
     final textStyle = context.textTheme;
-    final index = ref.watch(selectedCompanyProvider);
 
-    return Container(
-      decoration: BoxDecoration(shape: BoxShape.circle),
-      padding: const EdgeInsets.all(15.0),
-      child: Column(
-        children: [
-          _buildHeaderRow(
-              companies[index].name, companies[index].qr, textStyle),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Expanded(child: _buildLeftColumn(style, user.profile_pic_url)),
-                const SizedBox(width: 25),
-                Expanded(
-                    flex: 3,
-                    child: _buildRightColumn(
-                        style, user, companies[index], color)),
-              ],
+    return GestureDetector(
+      onTap: () {
+        showModalBottomSheet(
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          context: context,
+          builder: (context) {
+            return DetailWidget(color: color, company: company);
+          },
+        );
+      },
+      child: Container(
+        height: 200,
+        width: 300,
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          // border: Border.all(color: color.primary),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            _buildHeaderRow(company.name, company.qr, textStyle),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Expanded(
+                      child: _buildLeftColumn(style, user.profile_pic_url)),
+                  const SizedBox(width: 25),
+                  Expanded(
+                      flex: 3,
+                      child: _buildRightColumn(style, user, company, color)),
+                ],
+              ),
             ),
-          ),
-          _buildFooterRow(companies[index].exp, style)
-        ],
+            _buildFooterRow(company.exp, style)
+          ],
+        ),
       ),
     );
   }
@@ -57,6 +74,7 @@ class CardWidget extends ConsumerWidget {
             name.toUpperCase(),
             textAlign: TextAlign.center,
             style: const TextStyle(
+              color: Colors.white,
               fontSize: 25,
             ),
           ),

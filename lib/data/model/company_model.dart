@@ -14,6 +14,7 @@ class CompanyModel {
   String qr_code_url;
   String card_expire_date;
   String company_logo;
+  double rating;
 
   CompanyModel({
     required this.company_name,
@@ -24,6 +25,7 @@ class CompanyModel {
     required this.qr_code_url,
     required this.card_expire_date,
     required this.company_logo,
+    required this.rating,
   });
 
   factory CompanyModel.fromEntity(Company company) => CompanyModel(
@@ -35,19 +37,20 @@ class CompanyModel {
         qr_code_url: company.qr,
         card_expire_date: company.exp,
         company_logo: company.logo,
+        rating: company.rating,
       );
 
   Company toEntity() {
     return Company(
-      name: company_name,
-      email: company_email,
-      address: company_address,
-      phoneNumber: company_phone,
-      role: position,
-      qr: qr_code_url,
-      exp: card_expire_date,
-      logo: company_logo,
-    );
+        name: company_name,
+        email: company_email,
+        address: company_address,
+        phoneNumber: company_phone,
+        role: position,
+        qr: qr_code_url,
+        exp: card_expire_date,
+        logo: company_logo,
+        rating: rating);
   }
 
   Map<String, dynamic> toMap() {
@@ -60,20 +63,21 @@ class CompanyModel {
       'qr_code_url': qr_code_url,
       'card_expire_date': card_expire_date,
       'company_logo': company_logo,
+      'rating': rating,
     };
   }
 
   factory CompanyModel.fromMap(Map<String, dynamic> map) {
     return CompanyModel(
-      company_name: map['company_name'] as String,
-      company_email: map['company_email'] as String,
-      company_address: map['company_address'] as String,
-      company_phone: map['company_phone'] as String,
-      position: map['position'] as String,
-      qr_code_url: map['qr_code_url'] as String,
-      card_expire_date: map['card_expire_date'] as String,
-      company_logo: map['company_logo'] as String,
-    );
+        company_name: map['company_name'] as String,
+        company_email: map['company_email'] as String,
+        company_address: map['company_address'] as String,
+        company_phone: map['company_phone'] as String,
+        position: map['position'] as String,
+        qr_code_url: map['qr_code_url'] as String,
+        card_expire_date: map['card_expire_date'] as String,
+        company_logo: map['company_logo'] as String,
+        rating: map["rating"] == null ? 0.0 : map['rating'] as double);
   }
 
   String toJson() => json.encode(toMap());

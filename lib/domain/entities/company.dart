@@ -15,6 +15,7 @@ class Company with _$Company {
     required String qr,
     required String logo,
     required String exp,
+    required double rating,
   }) = _Company;
 
   factory Company.fromJson(Map<String, dynamic> json) =>

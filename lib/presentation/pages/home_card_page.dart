@@ -102,65 +102,64 @@ class _HomeCardScreenState extends ConsumerState<HomeCardScreen> {
   Widget build(BuildContext context) {
     final selectedCompany = ref.watch(selectedCompanyProvider);
     final color = context.colorScheme;
-    return Scaffold(
-      backgroundColor: color.secondaryContainer,
-      drawer: BuildDrawer(color: color, context: context),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : isempty
-              ? ListView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  children: [Text('no data')],
-                )
-              : SingleChildScrollView(
-                  child: Column(
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Stack(alignment: AlignmentDirectional.topEnd, children: [
+                CircleAvatar(
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.person),
+                  ),
+                ),
+                const Text(
+                  '3',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ]),
+            ),
+          ],
+        ),
+        backgroundColor: color.secondaryContainer,
+        drawer: BuildDrawer(color: color, context: context),
+        body: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : isempty
+                ? ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: const [Text('no data')],
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              color: Theme.of(context).primaryColor,
-                              child: const Row(
-                                children: [
-                                  CircleAvatar(),
-                                  Text(
-                                    'User',
-                                  )
-                                ],
-                              ),
-                            ),
-                            Stack(
-                              alignment: AlignmentDirectional.topEnd,
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor:
-                                      Theme.of(context).primaryColor,
-                                ),
-                                Badge(
-                                  child: const Text('3'),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                      const SizedBox(
+                        height: 20,
                       ),
-                      Flexible(
-                          child: SingleChildScrollView(
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text('My Digital Id',
+                            style: TextStyle(
+                                fontSize: 60, fontWeight: FontWeight.w400)),
+                      ),
+                      const Text('Digital Ids', style: TextStyle(fontSize: 40)),
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.all(12.0),
                         child: ListView.builder(
                           itemCount: companies.length,
                           itemBuilder: (context, index) {
-                            return ListTile(
-                              onTap: () {},
-                              title: Text(companies[index].name),
-                            );
+                            return CardWidget(company: companies[index]);
                           },
                         ),
                       )),
                     ],
                   ),
-                ),
+      ),
     );
   }
 }

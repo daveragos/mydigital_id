@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mydigital_id/app/utils/launch_helper.dart';
 import 'package:mydigital_id/domain/entities/company.dart';
+import 'package:mydigital_id/presentation/widgets/card_widget.dart';
+import 'package:mydigital_id/presentation/widgets/qr_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailWidget extends StatelessWidget {
@@ -16,15 +18,23 @@ class DetailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: MediaQuery.of(context).size.height * 0.75,
       decoration: BoxDecoration(
           color: color.secondaryContainer,
           borderRadius: BorderRadius.circular(20.0)),
       padding: const EdgeInsets.symmetric(horizontal: 28.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: ListView(
         children: [
-          CircleAvatar(
+          const SizedBox(height: 10),
+          CardWidget(company: company),
+          QRWidget(qrCode: company.qr),
+        ],
+      ),
+    );
+  }
+}
+ /*
+CircleAvatar(
             radius: 30,
             backgroundColor: Colors.grey,
             child: FadeInImage.assetNetwork(
@@ -52,8 +62,4 @@ class DetailWidget extends StatelessWidget {
           ListTile(
             title: Text('Address : ${company.address}'),
           ),
-        ],
-      ),
-    );
-  }
-}
+ */

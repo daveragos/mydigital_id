@@ -6,7 +6,7 @@ class UrlHelper {
       Uri emailUri = Uri(
         scheme: 'mailto',
         path: email,
-        queryParameters: {'subject': "Testing subject"},
+        queryParameters: {'subject': "Edit this subject"},
       );
 
       await launchUrl(emailUri);
@@ -50,6 +50,8 @@ class UrlHelper {
       print(e.toString());
     }
   }
+
+  //launch map
 }
 
 // void launchURL(String url) async {
